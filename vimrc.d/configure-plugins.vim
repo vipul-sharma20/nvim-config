@@ -135,4 +135,8 @@ let g:calendar_google_calendar=1
 let g:calendar_task_delete = 1
 " }}}
 
+" vim-registers {{{
+let g:vim_registers_window_layout='floating'
+" }}}
+
 " vim: fdm=marker
