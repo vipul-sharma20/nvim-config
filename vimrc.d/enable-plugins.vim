@@ -2,7 +2,6 @@ call plug#begin()
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'shime/vim-livedown'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
@@ -37,7 +36,6 @@ Plug 'tpope/vim-obsession'
 Plug 'iberianpig/tig-explorer.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'mhinz/vim-startify'
-Plug 'koron/nyancat-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'ryanoasis/vim-devicons'
 
