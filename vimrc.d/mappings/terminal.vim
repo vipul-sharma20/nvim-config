@@ -1,1 +1,1 @@
-tnoremap <C-\> <C-\><C-n>
+tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
