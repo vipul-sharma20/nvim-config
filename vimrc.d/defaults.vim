@@ -2,7 +2,7 @@ set ignorecase
 set wildmenu
 set pastetoggle=<F5>
 set number
-set relativenumber
+set norelativenumber
 set smartindent
 set bg=dark
 set mouse=a
@@ -49,8 +49,26 @@ highlight clear SignColumn
 highlight clear Folded
 highlight CustomHighlightGroup ctermfg=0 ctermbg=11 guifg=Black guibg=Yellow
 
-highlight ColorColumn ctermbg=magenta
-call matchadd('ColorColumn', '\%81v', 100)
+" highlight ColorColumn ctermbg=magenta
+" call matchadd('ColorColumn', '\%81v', 100)
+
+" disable command display in statusline
+set noshowcmd
+
+" Set terminal color
+set termguicolors
+
+" Don't load matchit.vim (paren/bracket matching)
+let loaded_matchparen=1
+
+" Don't match parentheses/brackets
+set noshowmatch
+
+" Wait to redraw
+set lazyredraw
+
+" Scroll 8 lines at a time at bottom/top
+" set scrolljump=8
 
 " Highlight bad whitespace
 highlight ws ctermbg=yellow guibg=yellow
