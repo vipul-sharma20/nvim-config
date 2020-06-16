@@ -27,17 +27,21 @@ I am using [vim-plug](https://github.com/junegunn/vim-plug) as the plugin manage
     <b>Python code</b>
 </p>
 
-![Alt](https://i.imgur.com/dRnPprn.png)
+![Alt][0]
 
 <p align="center">
     <b>Python code with NerdTree and Tagbar</b>
 </p>
 
-![Alt](https://i.imgur.com/6ItAq3f.png)
+![Alt][1]
 
 <p align="center">
     <b>Buffer search</b>
 </p>
 
-![Alt](https://i.imgur.com/4lCufep.png)
+![Alt][2]
+
+[0]: https://i.imgur.com/s5pUJyL.png
+[1]: https://i.imgur.com/XNaI1Xh.png
+[2]: https://i.imgur.com/G1pZzh0.png
 
