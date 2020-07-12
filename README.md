@@ -4,7 +4,6 @@ My vimrc.
 
 I am using [vim-plug](https://github.com/junegunn/vim-plug) as the plugin manager
 
-    ```
     .
     ├── README.md
     ├── vimrc (sourced vimrc)
@@ -19,7 +18,7 @@ I am using [vim-plug](https://github.com/junegunn/vim-plug) as the plugin manage
         │   ├── normal-visual.vim (key maps for normal and visual mode)
         │   └── terminal.vim (key maps for terminal mode)
         └── work.vim (work specific configs, not in this repo)
-    ```
+
 
 # Screenshots
 
