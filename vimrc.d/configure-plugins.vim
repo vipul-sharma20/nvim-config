@@ -5,7 +5,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsSnippetDirectories=["~/.vim/bundle/vim-snippets/UltiSnips"]
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsUsePythonVersion = 3
-let g:python3_host_prog = '/Library/Frameworks/Python.framework/Versions/3.6/bin/python3'
+let g:python3_host_prog = system('which python3')
 " }}}
 
 " ale {{{
