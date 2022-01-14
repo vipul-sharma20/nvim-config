@@ -173,5 +173,13 @@ return require("packer").startup(function(use)
         end,
     }
 
+    use {
+        "puremourning/vimspector"
+    }
+
+    use {
+        "tools-life/taskwiki"
+    }
+
 end)
 
