@@ -127,7 +127,8 @@ local mappings = {
     s = {
         name = "Search",
         b = {"<cmd>Telescope git_branches<cr>", "Checkout branch"},
-        c = {"<cmd>Telescope colorscheme<cr>", "Colorscheme"},
+        c = {"<cmd>Telescope commands<cr>", "Commands"},
+        C = {"<cmd>Telescope colorscheme<cr>", "Colorscheme"},
         -- d = {
         --     "<cmd>Telescope lsp_document_diagnostics<cr>",
         --     "Document Diagnostics"
@@ -153,6 +154,7 @@ local mappings = {
 vim.api.nvim_set_keymap("n", "<leader>gg", ":LazyGit<CR>",
 		    {noremap = true, silent = true})
 mappings["gg"] = "LazyGit"
+
 -- open projects
 vim.api.nvim_set_keymap('n', '<leader>p',
 		    ":lua require'telescope'.extensions.project.project{}<CR>",
