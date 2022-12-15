@@ -64,7 +64,7 @@ return require("packer").startup(function(use)
 	}
 
     -- Copilot
-    use {"github/copilot.vim"}
+    -- use {"github/copilot.vim"}
 
     -- Treesitter
     use {
@@ -164,6 +164,12 @@ return require("packer").startup(function(use)
         run = "make"
     }
 
+
+    -- To be deprecated after https://github.com/neovim/neovim/pull/19243 release
+    -- To stabilize splits location
+    use {"luukvbaal/stabilize.nvim"}
+
+    -- View and search LSP symbols
     use {"liuchengxu/vista.vim"}
 
     use {
@@ -180,6 +186,19 @@ return require("packer").startup(function(use)
     use {
         "tools-life/taskwiki"
     }
+
+    -- Light colorscheme
+    use "rafamadriz/neon"
+
+    use {
+        "lukas-reineke/lsp-format.nvim",
+        config = function()
+            require("plugins.lsp-format")
+        end,
+    }
+
+    -- Light colorscheme
+    use "NLKNguyen/papercolor-theme"
 
 end)
 
