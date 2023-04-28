@@ -95,12 +95,12 @@ local mappings = {
             "<cmd>Telescope lsp_workspace_diagnostics<cr>",
             "Workspace Diagnostics"
         },
-        f = {"<cmd>lua vim.lsp.buf.formatting()<cr>", "Format"},
+        f = {"<cmd>lua vim.lsp.buf.format()<cr>", "Format"},
         gd = {
             "<cmd>lua vim.lsp.buf.references()<cr>",
             "References"
         },
-        h = {"<cmd>Lspsaga hover_doc<cr>", "Hover Doc"},
+        h = {"<cmd>Lspsaga signature_help<cr>", "Signature help"},
         i = {"<cmd>LspInfo<cr>", "Info"},
         j = {"<cmd>Lspsaga diagnostic_jump_prev<cr>", "Prev Diagnostic"},
         k = {"<cmd>Lspsaga diagnostic_jump_next<cr>", "Next Diagnostic"},
