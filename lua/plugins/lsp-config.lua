@@ -44,3 +44,17 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+-- Python LSP setup
+nvim_lsp.pylsp.setup{
+  settings = {
+    pylsp = {
+      plugins = {
+         pycodestyle = {
+          maxLineLength = 100
+        }
+      }
+    }
+  }
+}
+
