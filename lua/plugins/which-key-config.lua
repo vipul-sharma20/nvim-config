@@ -148,6 +148,10 @@ local mappings = {
         name = "Session",
         s = {"<cmd>SessionSave<cr>", "Save Session"},
         l = {"<cmd>SessionLoad<cr>", "Load Session"}
+    },
+    o = {
+        name = "ChatGPT",
+        i = {"<cmd>ChatGPT<cr>", "Open ChatGPT Window"},
     }
 }
 
