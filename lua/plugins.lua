@@ -76,7 +76,12 @@ return require("packer").startup(function(use)
     }
 
     -- Colorschemes
-    use "rebelot/kanagawa.nvim"
+    use {
+        "rebelot/kanagawa.nvim",
+        config = function()
+            require("plugins.kanagawa")
+        end
+    }
 
     -- Git
     use {

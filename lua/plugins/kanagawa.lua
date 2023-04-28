@@ -1,0 +1,14 @@
+-- Default options:
+-- require('kanagawa').setup {
+--     colors = {
+--         theme = {
+--             all = {
+--                 ui = {
+--                     bg_gutter = "none"
+--                     LineNr = "none"
+--                     SignColumn = "none"
+--                 }
+--             }
+--         }
+--     }
+-- }
