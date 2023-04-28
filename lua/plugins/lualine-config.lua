@@ -1,5 +1,18 @@
 local lualine = require 'lualine'
 
+-- Kanagawa colors
+local colors = {
+  red = '#e82424',
+  grey = '#727169',
+  black = '#1f1f28',
+  white = '#dcd7ba',
+  light_green = '#98BB6C',
+  orange = '#ffa066',
+  green = '#76946a',
+}
+
+
+-- Config for basic lualine
 require('lualine').setup {
   options = {
     theme = 'kanagawa',
