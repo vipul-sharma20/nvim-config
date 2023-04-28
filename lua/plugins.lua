@@ -205,5 +205,36 @@ return require("packer").startup(function(use)
     -- Light colorscheme
     use "NLKNguyen/papercolor-theme"
 
+    -- CellularAutomaton
+    use "Eandrju/cellular-automaton.nvim"
+
+    use "tpope/vim-surround"
+
+    -- Image viewer
+    use {
+        "edluffy/hologram.nvim",
+        config = function()
+            require('hologram').setup{
+            auto_display = true -- WIP automatic markdown image display, may be prone to breaking
+        }
+        end,
+
+    }
+
+    -- Notification manager
+    use "rcarriga/nvim-notify"
+
+    use({
+        "jackMort/ChatGPT.nvim",
+        config = function()
+            require("plugins.chatgpt")
+        end,
+        requires = {
+          "MunifTanjim/nui.nvim",
+          "nvim-lua/plenary.nvim",
+          "nvim-telescope/telescope.nvim"
+        }
+    })
+
 end)
 
