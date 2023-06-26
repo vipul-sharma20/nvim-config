@@ -236,5 +236,22 @@ return require("packer").startup(function(use)
         }
     })
 
+    use {
+      "folke/zen-mode.nvim",
+      config = function()
+            require("plugins.zen-mode")
+      end
+    }
+
+    use {
+        "winter-again/annotate.nvim",
+        requires = {'kkharji/sqlite.lua'},
+        config = function()
+            require("plugins.annotate")
+        end
+
+
+    }
+
 end)
 
