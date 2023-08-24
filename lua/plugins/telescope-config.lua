@@ -53,10 +53,11 @@ require('telescope').setup {
                 -- ["<C-i>"] = actions.select_horizontal,
 
                 -- Add up multiple actions
-                ["<CR>"] = actions.select_default + actions.center
+                ["<CR>"] = actions.select_default + actions.center,
 
                 -- You can perform as many actions in a row as you like
                 -- ["<CR>"] = actions.select_default + actions.center + my_cool_custom_action,
+                ["<C-d>"] = actions.delete_buffer
             },
             n = {
                 ["<C-j>"] = actions.move_selection_next,
