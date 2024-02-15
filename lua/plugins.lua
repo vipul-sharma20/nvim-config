@@ -143,24 +143,6 @@ return require("packer").startup(function(use)
         ft = "markdown",
     }
 
-    use {
-        "KadoBOT/nvim-spotify", 
-        requires = "nvim-telescope/telescope.nvim",
-        config = function()
-            local spotify = require"nvim-spotify"
-
-            spotify.setup {
-                -- default opts
-                status = {
-                    update_interval = 10000, -- the interval (ms) to check for what"s currently playing
-                    format = "%s %t by %a" -- spotify-tui --format argument
-                }
-            }
-        end,
-        run = "make"
-    }
-
-
     -- To be deprecated after https://github.com/neovim/neovim/pull/19243 release
     -- To stabilize splits location
     use {"luukvbaal/stabilize.nvim"}
