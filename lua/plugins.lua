@@ -124,13 +124,7 @@ return require("packer").startup(function(use)
             require("plugins.nvim-autopairs-config")
         end,
     }
-    use {
-        "lukas-reineke/indent-blankline.nvim",
-        ft = {"python", "go", "lua", "yaml"},
-        config = function()
-            require("plugins.indent-blankline-config")
-        end,
-    }
+
     use {
         "folke/trouble.nvim",
         requires = "kyazdani42/nvim-web-devicons"
