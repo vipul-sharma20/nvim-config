@@ -63,9 +63,6 @@ return require("packer").startup(function(use)
         end,
 	}
 
-    -- Copilot
-    use {"github/copilot.vim"}
-
     -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
