@@ -14,6 +14,10 @@ return require("packer").startup(function(use)
     -- LSP
     use {
         "neovim/nvim-lspconfig",
+        requires = {
+            "nvim-treesitter/nvim-treesitter", -- optional
+            "nvim-tree/nvim-web-devicons"     -- optional
+        },
         config = function()
             require("plugins.lsp-config")
         end,
