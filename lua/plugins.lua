@@ -175,54 +175,6 @@ return require("packer").startup(function(use)
 
     use "linux-cultist/venv-selector.nvim"
 
-    use({
-      "yetone/avante.nvim",
-      -- If you want to build from source: 
-      -- run = "make BUILD_FROM_SOURCE=true"
-      --
-      -- On Windows, you might do:
-      -- run = 'powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false'
-      run = "make",
-
-      -- You can choose to lazy-load or not; "event" here is just for example
-      -- event = "VimEnter", -- or remove this line to load immediately
-
-      requires = {
-        "stevearc/dressing.nvim",
-        "nvim-lua/plenary.nvim",
-        "MunifTanjim/nui.nvim",
-        -- optional dependencies
-        "echasnovski/mini.pick",        -- for file_selector provider mini.pick
-        "nvim-telescope/telescope.nvim",-- for file_selector provider telescope
-        "hrsh7th/nvim-cmp",             -- autocompletion for avante
-        "ibhagwan/fzf-lua",             -- for file_selector provider fzf
-        "nvim-tree/nvim-web-devicons",  -- or echasnovski/mini.icons
-        "zbirenbaum/copilot.lua",       -- for providers='copilot'
-        {
-          -- support for image pasting
-          "HakonHarnes/img-clip.nvim",
-          -- packer has no "VeryLazy" event, you could do:
-          -- event = "VimEnter", or load it immediately
-          config = function()
-            require("img-clip").setup({
-              default = {
-                embed_image_as_base64 = false,
-                prompt_for_file_name = false,
-                drag_and_drop = { insert_mode = true },
-                use_absolute_path = true, -- especially needed for Windows
-              },
-            })
-          end,
-        },
-      },
-
-      -- Packer’s way to configure after loading
-      config = function()
-        require("avante_lib").load()
-        require("plugins.avante")
-      end,
-    })
-
     -- Colorschemes
     use {
         "rebelot/kanagawa.nvim",
