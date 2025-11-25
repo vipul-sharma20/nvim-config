@@ -1,13 +1,18 @@
 local actions = require('telescope.actions')
 
 require('telescope').setup {
+    pickers = {
+        find_files = {
+            follow = true
+        }
+    },
     defaults = {
         find_command = {
             'rg', '--no-heading', '--with-filename', '--line-number',
             '--column', '--smart-case'
         },
-        prompt_prefix = " ",
-        selection_caret = "  ",
+        prompt_prefix = "  ",
+        selection_caret = "  ",
         entry_prefix = "   ",
         initial_mode = "insert",
         selection_strategy = "reset",
@@ -21,12 +26,17 @@ require('telescope').setup {
             vertical = {mirror = false}
         },
         file_sorter = require'telescope.sorters'.get_fzy_sorter,
-        file_ignore_patterns = {},
+        file_ignore_patterns = {
+            "%.env",
+            "^llm/",
+            "^json/",
+            "%.sql%"
+        },
         generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
         -- path_display = true,
         winblend = 0,
         border = {},
-        borderchars = {'─', '│', '─', '│', '╭', '╮', '╯', '╰'},
+        borderchars = {'━', '┃', '━', '┃', '┏', '┓', '┛', '┗'},
         color_devicons = true,
         use_less = true,
         set_env = {['COLORTERM'] = 'truecolor'}, -- default = nil,
@@ -75,5 +85,3 @@ require('telescope').setup {
         }
     }
 }
-
-
