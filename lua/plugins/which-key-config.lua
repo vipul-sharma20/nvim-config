@@ -20,7 +20,7 @@ require("which-key").setup {
         group = "+" -- symbol prepended to a group
     },
     window = {
-        border = "single", -- none, single, double, shadow
+        border = {'┏', '━', '┓', '┃', '┛', '━', '┗', '┃'}, -- custom thick rectangular border
         position = "bottom", -- bottom, top
         margin = {1, 0, 1, 0}, -- extra window margin [top, right, bottom, left]
         padding = {2, 2, 2, 2} -- extra window padding [top, right, bottom, left]
@@ -50,10 +50,12 @@ vim.api.nvim_set_keymap('n', '<Leader>h', ':let @/=""<CR>',
 -- TODO create entire treesitter section
 
 local mappings = {
-
     ["/"] = "Comment",
     ["f"] = "Find File",
     ["h"] = "No Highlight",
+    h = {
+        "<cmd>Telescope find_files hidden=true<cr>", "Find File (including hidden)"
+    },
     e = {
         "<cmd>Telescope find_files<cr>", "Find File",
     },
@@ -87,7 +89,7 @@ local mappings = {
         a = {"<cmd>Lspsaga code_action<cr>", "Code Action"},
         A = {"<cmd>Lspsaga range_code_action<cr>", "Selected Action"},
         d = {
-            "<cmd>Telescope lsp_document_diagnostics<cr>",
+            "<cmd>lua vim.diagnostic.open_float()<cr>",
             "Document Diagnostics"
         },
         D = {
@@ -96,7 +98,7 @@ local mappings = {
         },
         f = {"<cmd>lua vim.lsp.buf.format()<cr>", "Format"},
         gd = {
-            "<cmd>lua vim.lsp.buf.references()<cr>",
+            "<cmd>lua require('telescope.builtin').lsp_references({ layout_config = { preview_width = 0.65, width = 0.9 } })<cr>",
             "References"
         },
         h = {"<cmd>Lspsaga signature_help<cr>", "Signature help"},
@@ -141,7 +143,8 @@ local mappings = {
         M = {"<cmd>Telescope man_pages<cr>", "Man Pages"},
         r = {"<cmd>Telescope oldfiles<cr>", "Open Recent File"},
         R = {"<cmd>Telescope registers<cr>", "Registers"},
-        t = {"<cmd>Telescope live_grep<cr>", "Text"}
+        t = {"<cmd>Telescope live_grep<cr>", "Text"},
+        e = {"<cmd>FzfLua blines<cr>", "Buffer Search"}
     },
     S = {
         name = "Session",
@@ -163,7 +166,7 @@ local mappings = {
         x = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code", mode = { "n", "v" } },
         r = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", mode = { "n", "v" } },
         l = { "<cmd>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", mode = { "n", "v" } },
-      }
+      },
 }
 
 vim.api.nvim_set_keymap("n", "<leader>gg", ":LazyGit<CR>",
@@ -176,7 +179,14 @@ vim.api.nvim_set_keymap('n', '<leader>p',
 		    {noremap = true, silent = true})
 mappings["p"] = "Projects"
 
--- [";"] = "Dashboard",
+vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
+		    {noremap = true, silent = true})
+mappings["gd"] = "Goto Definition"
+
+vim.api.nvim_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>",
+		    {noremap = true, silent = true})
+mappings["gr"] = "Goto References"
+
 vim.cmd('highlight WhichKeyFloat ctermbg=BLACK ctermfg=BLACK')
 
 local wk = require("which-key")
