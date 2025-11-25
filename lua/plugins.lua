@@ -23,7 +23,6 @@ return require("packer").startup(function(use)
         end,
     }
     use {"glepnir/lspsaga.nvim"}
-    use {"kabouzeid/nvim-lspinstall"}
 
     -- Telescope
     use {"nvim-lua/popup.nvim"}
@@ -51,17 +50,10 @@ return require("packer").startup(function(use)
         end,
     }
 
-    -- Tabline
-    use {
-        "kdheepak/tabline.nvim",
-        config = function()
-            require("plugins.tabline-config")
-        end,
-    }
-
     -- Lua
     use {
         "folke/which-key.nvim",
+        tag = 'v2.0.0',
         config = function()
             require("plugins.which-key-config")
         end,
@@ -73,14 +65,6 @@ return require("packer").startup(function(use)
         run = ":TSUpdate",
         config = function()
             require("plugins.treesitter-config")
-        end
-    }
-
-    -- Colorschemes
-    use {
-        "rebelot/kanagawa.nvim",
-        config = function()
-            require("plugins.kanagawa")
         end
     }
 
@@ -107,7 +91,13 @@ return require("packer").startup(function(use)
 
     -- Autocomplete
     use {
-        "hrsh7th/nvim-compe",
+        "hrsh7th/nvim-cmp",
+        requires = {
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+            "hrsh7th/cmp-nvim-lsp"
+        },
         config = function()
             require("plugins.nvim-compe-config")
         end,
@@ -144,7 +134,7 @@ return require("packer").startup(function(use)
     use {
         "iamcco/markdown-preview.nvim",
         run = "cd app && npm install",
-        ft = "markdown",
+        ft = {"markdown", "vimwiki"},
     }
 
     -- To be deprecated after https://github.com/neovim/neovim/pull/19243 release
@@ -161,23 +151,8 @@ return require("packer").startup(function(use)
         end,
     }
 
-    use {
-        "puremourning/vimspector"
-    }
-
-    use {
-        "tools-life/taskwiki"
-    }
-
     -- Light colorscheme
     use "rafamadriz/neon"
-
-    use {
-        "lukas-reineke/lsp-format.nvim",
-        config = function()
-            require("plugins.lsp-format")
-        end,
-    }
 
     -- Light colorscheme
     use "NLKNguyen/papercolor-theme"
@@ -187,32 +162,10 @@ return require("packer").startup(function(use)
 
     use "tpope/vim-surround"
 
-    -- Image viewer
-    use {
-        "edluffy/hologram.nvim",
-        config = function()
-            require('hologram').setup{
-            auto_display = true -- WIP automatic markdown image display, may be prone to breaking
-        }
-        end,
-
-    }
-
     -- Notification manager
     use "rcarriga/nvim-notify"
 
-    use({
-        "jackMort/ChatGPT.nvim",
-        config = function()
-            require("plugins.chatgpt")
-        end,
-        requires = {
-          "MunifTanjim/nui.nvim",
-          "nvim-lua/plenary.nvim",
-          "nvim-telescope/telescope.nvim"
-        }
-    })
-
+    use "MunifTanjim/nui.nvim"
     use {
       "folke/zen-mode.nvim",
       config = function()
@@ -220,15 +173,100 @@ return require("packer").startup(function(use)
       end
     }
 
+    use "linux-cultist/venv-selector.nvim"
+
+    use({
+      "yetone/avante.nvim",
+      -- If you want to build from source: 
+      -- run = "make BUILD_FROM_SOURCE=true"
+      --
+      -- On Windows, you might do:
+      -- run = 'powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false'
+      run = "make",
+
+      -- You can choose to lazy-load or not; "event" here is just for example
+      -- event = "VimEnter", -- or remove this line to load immediately
+
+      requires = {
+        "stevearc/dressing.nvim",
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim",
+        -- optional dependencies
+        "echasnovski/mini.pick",        -- for file_selector provider mini.pick
+        "nvim-telescope/telescope.nvim",-- for file_selector provider telescope
+        "hrsh7th/nvim-cmp",             -- autocompletion for avante
+        "ibhagwan/fzf-lua",             -- for file_selector provider fzf
+        "nvim-tree/nvim-web-devicons",  -- or echasnovski/mini.icons
+        "zbirenbaum/copilot.lua",       -- for providers='copilot'
+        {
+          -- support for image pasting
+          "HakonHarnes/img-clip.nvim",
+          -- packer has no "VeryLazy" event, you could do:
+          -- event = "VimEnter", or load it immediately
+          config = function()
+            require("img-clip").setup({
+              default = {
+                embed_image_as_base64 = false,
+                prompt_for_file_name = false,
+                drag_and_drop = { insert_mode = true },
+                use_absolute_path = true, -- especially needed for Windows
+              },
+            })
+          end,
+        },
+      },
+
+      -- Packer’s way to configure after loading
+      config = function()
+        require("avante_lib").load()
+        require("plugins.avante")
+      end,
+    })
+
+    -- Colorschemes
     use {
-        "winter-again/annotate.nvim",
-        requires = {'kkharji/sqlite.lua'},
+        "rebelot/kanagawa.nvim",
         config = function()
-            require("plugins.annotate")
+            require("plugins.kanagawa")
         end
-
-
     }
 
-end)
+    use {
+        "catppuccin/nvim",
+        config = function()
+            require("plugins.catppuccin")
+        end
+    }
 
+    use {"hat0uma/csvview.nvim"}
+    use {"junegunn/fzf.vim"}
+    use {
+        "coder/claudecode.nvim",
+         requires = { "folke/snacks.nvim" },
+         config = function()
+             require("plugins.claudecode")
+        end
+    }
+    use {
+        'LukasPietzschmann/telescope-tabs',
+        requires = { 'nvim-telescope/telescope.nvim' },
+        config = function()
+            require("plugins.telescope-tabs")
+        end
+    }
+
+    use {
+        'nvim-tree/nvim-tree.lua',
+        config = function()
+            require("plugins.nvim-tree")
+        end
+    }
+    use {
+        'nvim-mini/mini.nvim',
+        config = function()
+            require('mini.cursorword').setup({
+                delay=300
+            })
+        end
+    }
+end)
