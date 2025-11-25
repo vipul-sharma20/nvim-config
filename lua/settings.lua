@@ -1,10 +1,13 @@
+-- Set leader key
+vim.g.mapleader = "\\"
+
 -- Tabs and spaces
 vim.o.ts = 4 -- Insert 4 spaces for a tab
 vim.o.sw = 4 -- Change the number of space characters inserted for indentation
 vim.o.expandtab = true  -- Converts tabs to spaces
 
 -- Colorscheme
-vim.cmd('colorscheme kanagawa')
+vim.cmd('colorscheme catppuccin-mocha')
 vim.o.bg = "dark"
 vim.o.syntax = "on"
 
@@ -28,15 +31,27 @@ vim.cmd([[
 -- Misc
 vim.o.pumheight = 25 -- Makes popup menu smaller
 vim.o.fileencoding = "utf-8" -- The encoding written to file
-vim.o.cmdheight = 1 -- Use 2 for more space for displaying messages
+vim.o.cmdheight = 0 -- Use 2 for more space for displaying messages
 vim.o.mouse = "a" -- Enable your mouse
 vim.o.timeoutlen = 100 -- By default timeoutlen is 1000 ms
 vim.o.undofile = true -- Enable persistent undo
-vim.o.list = true
+vim.o.list = false
 vim.o.swapfile = false -- Do not write any swp files
 vim.o.nu = true -- Show line numbers
-vim.o.laststatus = 2 -- Show statusline
+vim.o.relativenumber = true
+vim.o.laststatus = 3 -- Show statusline
 vim.o.ignorecase = true -- Ignore case when searching
 vim.o.signcolumn = "yes" -- Show signs column left of line numbers
 vim.o.splitright = true -- Create a new split on the right
 
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
+vim.cmd([[
+hi! link MiniCursorword Visual
+hi! MiniCursorwordCurrent gui=nocombine guifg=NONE guibg=NONE
+]])
