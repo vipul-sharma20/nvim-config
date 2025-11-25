@@ -1,7 +1,7 @@
 local lualine = require 'lualine'
 
 -- Kanagawa colors
-local colors = {
+local kanagawa_colors = {
   red = '#e82424',
   grey = '#727169',
   black = '#1f1f28',
@@ -15,7 +15,7 @@ local colors = {
 -- Config for basic lualine
 require('lualine').setup {
   options = {
-    theme = 'kanagawa',
+    theme = 'catppuccin-mocha',
     component_separators = '|',
     section_separators = { left = '', right = '' },
   },
@@ -39,6 +39,13 @@ require('lualine').setup {
     lualine_y = {},
     lualine_z = { 'location' },
   },
-  tabline = {},
+  tabline = {
+      lualine_a = {'buffers'},
+      -- lualine_b = {'branch'},
+      -- lualine_c = {'filename'},
+      lualine_x = {},
+      lualine_y = {},
+      -- lualine_z = {'tabs'},
+  },
   extensions = {},
 }
