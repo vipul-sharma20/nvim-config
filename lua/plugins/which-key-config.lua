@@ -86,14 +86,13 @@ local mappings = {
     },
     l = {
         name = "LSP",
-        a = {"<cmd>Lspsaga code_action<cr>", "Code Action"},
-        A = {"<cmd>Lspsaga range_code_action<cr>", "Selected Action"},
+        a = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action"},
         d = {
             "<cmd>lua vim.diagnostic.open_float()<cr>",
             "Document Diagnostics"
         },
         D = {
-            "<cmd>Telescope lsp_workspace_diagnostics<cr>",
+            "<cmd>Telescope diagnostics<cr>",
             "Workspace Diagnostics"
         },
         f = {"<cmd>lua vim.lsp.buf.format()<cr>", "Format"},
@@ -101,16 +100,16 @@ local mappings = {
             "<cmd>lua require('telescope.builtin').lsp_references({ layout_config = { preview_width = 0.65, width = 0.9 } })<cr>",
             "References"
         },
-        h = {"<cmd>Lspsaga signature_help<cr>", "Signature help"},
+        h = {"<cmd>lua vim.lsp.buf.signature_help()<cr>", "Signature help"},
         i = {"<cmd>LspInfo<cr>", "Info"},
-        j = {"<cmd>Lspsaga diagnostic_jump_prev<cr>", "Prev Diagnostic"},
-        k = {"<cmd>Lspsaga diagnostic_jump_next<cr>", "Next Diagnostic"},
-        l = {"<cmd>Lspsaga lsp_finder<cr>", "LSP Finder"},
-        L = {"<cmd>Lspsaga show_line_diagnostics<cr>", "Line Diagnostics"},
-        p = {"<cmd>Lspsaga preview_definition<cr>", "Preview Definition"},
+        j = {"<cmd>lua vim.diagnostic.goto_prev()<cr>", "Prev Diagnostic"},
+        k = {"<cmd>lua vim.diagnostic.goto_next()<cr>", "Next Diagnostic"},
+        l = {"<cmd>Telescope lsp_references<cr>", "LSP References"},
+        L = {"<cmd>lua vim.diagnostic.open_float()<cr>", "Line Diagnostics"},
+        p = {"<cmd>Telescope lsp_definitions<cr>", "Preview Definition"},
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
-        r = {"<cmd>Lspsaga rename<cr>", "Rename"},
-        t = {"<cmd>LspTypeDefinition<cr>", "Type Definition"},
+        r = {"<cmd>lua vim.lsp.buf.rename()<cr>", "Rename"},
+        t = {"<cmd>lua vim.lsp.buf.type_definition()<cr>", "Type Definition"},
         x = {"<cmd>cclose<cr>", "Close Quickfix"},
         s = {"<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
         S = {

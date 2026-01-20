@@ -22,8 +22,6 @@ return require("packer").startup(function(use)
             require("plugins.lsp-config")
         end,
     }
-    use {"glepnir/lspsaga.nvim"}
-
     -- Telescope
     use {"nvim-lua/popup.nvim"}
     use {"nvim-lua/plenary.nvim"}
