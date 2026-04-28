@@ -1,222 +1,187 @@
--- autocompile packer stuff
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+if not vim.pack then
+    local version = vim.fn.matchstr(vim.fn.execute("version"), [[NVIM v\zs[^\n ]*]])
+    if version == "" then
+        version = "unknown"
+    end
+    error(
+        string.format(
+            "This config uses Neovim's built-in vim.pack plugin manager, but vim.pack is not available in NVIM %s. Upgrade Neovim to a build that includes vim.pack.",
+            version
+        )
+    )
+end
 
-return require("packer").startup(function(use)
+local function gh(repo, opts)
+    local spec = vim.tbl_extend("force", { src = "https://github.com/" .. repo }, opts or {})
+    return spec
+end
 
-    -- Packer can manage itself as an optional plugin
-    use {"wbthomason/packer.nvim"}
+local function safe_require(module)
+    local ok, err = pcall(require, module)
+    if not ok then
+        vim.notify(("Failed to load %s: %s"):format(module, err), vim.log.levels.ERROR)
+    end
+end
 
+local function notify_pack_hook(name, command, result)
+    if result.code ~= 0 then
+        vim.schedule(function()
+            vim.notify(
+                ("Post-install hook failed for %s: %s\n%s"):format(name, command, result.stderr or ""),
+                vim.log.levels.ERROR
+            )
+        end)
+    end
+end
+
+if vim.fn.exists("##PackChanged") == 1 then
+    vim.api.nvim_create_autocmd("PackChanged", {
+        group = vim.api.nvim_create_augroup("builtin_pack_hooks", { clear = true }),
+        callback = function(event)
+            local data = event.data or {}
+            local spec = data.spec or {}
+            local name = spec.name
+            local kind = data.kind
+
+            if kind ~= "install" and kind ~= "update" then
+                return
+            end
+
+            if name == "fzf" then
+                vim.schedule(function()
+                    if not data.active then
+                        pcall(vim.cmd.packadd, "fzf")
+                    end
+                    if vim.fn.exists("*fzf#install") == 1 then
+                        vim.fn["fzf#install"]()
+                    end
+                end)
+            elseif name == "markdown-preview.nvim" then
+                local app_dir = data.path and (data.path .. "/app")
+                if app_dir and vim.fn.isdirectory(app_dir) == 1 then
+                    vim.system({ "npm", "install" }, { cwd = app_dir }, function(result)
+                        notify_pack_hook(name, "npm install", result)
+                    end)
+                end
+            elseif name == "nvim-treesitter" then
+                vim.schedule(function()
+                    if not data.active then
+                        pcall(vim.cmd.packadd, "nvim-treesitter")
+                    end
+                    pcall(vim.cmd, "TSUpdate")
+                end)
+            end
+        end,
+    })
+end
+
+-- Vimwiki reads g:vimwiki_list while its plugin files load, so this must run
+-- before vim.pack loads vimwiki.
+safe_require("plugins.vimwiki-config")
+
+vim.pack.add({
     -- LSP
-    use {
-        "neovim/nvim-lspconfig",
-        requires = {
-            "nvim-treesitter/nvim-treesitter", -- optional
-            "nvim-tree/nvim-web-devicons"     -- optional
-        },
-        config = function()
-            require("plugins.lsp-config")
-        end,
-    }
+    gh("neovim/nvim-lspconfig"),
+    gh("nvim-treesitter/nvim-treesitter", { version = "master" }),
+    gh("nvim-tree/nvim-web-devicons"),
+
     -- Telescope
-    use {"nvim-lua/popup.nvim"}
-    use {"nvim-lua/plenary.nvim"}
-    use {
-	    "nvim-telescope/telescope.nvim",
-        requires = { {"nvim-lua/plenary.nvim"} },
-        config = function()
-            require("plugins.telescope-config")
-        end,
-	}
-    -- Use project for telescope
-    use {
-        "nvim-telescope/telescope-project.nvim",
-        -- event = "BufRead",
-        -- after = "telescope.nvim",
-    }
+    gh("nvim-lua/popup.nvim"),
+    gh("nvim-lua/plenary.nvim"),
+    gh("nvim-telescope/telescope.nvim"),
+    gh("nvim-telescope/telescope-project.nvim"),
 
-    -- Statusline
-    use {
-        "nvim-lualine/lualine.nvim",
-        requires = {"kyazdani42/nvim-web-devicons", opt = true},
-        config = function()
-            require("plugins.lualine-config")
-        end,
-    }
-
-    -- Lua
-    use {
-        "folke/which-key.nvim",
-        tag = 'v2.0.0',
-        config = function()
-            require("plugins.which-key-config")
-        end,
-	}
-
-    -- Treesitter
-    use {
-        "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-        config = function()
-            require("plugins.treesitter-config")
-        end
-    }
+    -- UI
+    gh("nvim-lualine/lualine.nvim"),
+    gh("folke/which-key.nvim", { version = "v2.0.0" }),
+    gh("folke/trouble.nvim"),
+    gh("rcarriga/nvim-notify"),
+    gh("folke/zen-mode.nvim"),
+    gh("rebelot/kanagawa.nvim"),
+    gh("catppuccin/nvim", { name = "catppuccin" }),
+    gh("rafamadriz/neon"),
+    gh("NLKNguyen/papercolor-theme"),
+    gh("kepano/flexoki-neovim"),
 
     -- Git
-    use {
-        "lewis6991/gitsigns.nvim",
-        requires = {
-          "nvim-lua/plenary.nvim"
-        },
-        tag = "release", -- To use the latest release
-        config = function()
-            require("plugins.gitsigns-config")
-        end,
-    }
+    gh("lewis6991/gitsigns.nvim", { version = "release" }),
+    gh("kdheepak/lazygit.nvim"),
 
-    -- Git blame
-    use {
-        "f-person/git-blame.nvim",
-        disable = true
-    }
+    -- Completion
+    gh("hrsh7th/nvim-cmp"),
+    gh("hrsh7th/cmp-buffer"),
+    gh("hrsh7th/cmp-path"),
+    gh("hrsh7th/cmp-cmdline"),
+    gh("hrsh7th/cmp-nvim-lsp"),
 
-    -- Lazy git
-    use "kdheepak/lazygit.nvim"
+    -- Editing
+    gh("vimwiki/vimwiki"),
+    gh("windwp/nvim-autopairs"),
+    gh("kevinhwang91/nvim-bqf"),
+    gh("junegunn/fzf"),
+    gh("junegunn/fzf.vim"),
+    gh("iamcco/markdown-preview.nvim"),
+    gh("luukvbaal/stabilize.nvim"),
+    gh("liuchengxu/vista.vim"),
+    gh("mfussenegger/nvim-dap"),
+    gh("Eandrju/cellular-automaton.nvim"),
+    gh("tpope/vim-surround"),
+    gh("MunifTanjim/nui.nvim"),
+    gh("linux-cultist/venv-selector.nvim"),
+    gh("hat0uma/csvview.nvim"),
+    gh("LukasPietzschmann/telescope-tabs"),
+    gh("nvim-tree/nvim-tree.lua"),
+    gh("nvim-mini/mini.nvim"),
+    gh("epwalsh/obsidian.nvim"),
 
-    -- Autocomplete
-    use {
-        "hrsh7th/nvim-cmp",
-        requires = {
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
-            "hrsh7th/cmp-nvim-lsp"
-        },
-        config = function()
-            require("plugins.nvim-compe-config")
-        end,
-    }
+    -- AI/dev workflow
+    gh("folke/snacks.nvim"),
+    gh("coder/claudecode.nvim"),
+    { src = "/Users/vipul/projects/nevern.nvim", name = "nevern.nvim" },
+    { src = "/Users/vipul/projects/tasks.nvim", name = "tasks.nvim" },
+}, {
+    confirm = false,
+    load = true,
+})
 
-    -- Vimwiki
-    use {
-        "vimwiki/vimwiki",
-        config = function()
-            require("plugins.vimwiki-config")
-        end
-    }
+safe_require("plugins.catppuccin")
+safe_require("plugins.kanagawa")
+pcall(vim.cmd.colorscheme, "catppuccin-mocha")
 
-    -- Dev
-    use {
-        "windwp/nvim-autopairs",
-        config = function()
-            require("plugins.nvim-autopairs-config")
-        end,
-    }
+safe_require("plugins.lsp-config")
+safe_require("plugins.telescope-config")
+safe_require("plugins.lualine-config")
+safe_require("plugins.treesitter-config")
+safe_require("plugins.gitsigns-config")
+safe_require("plugins.nvim-compe-config")
+safe_require("plugins.nvim-autopairs-config")
+safe_require("plugins.dap-config")
+safe_require("plugins.zen-mode")
+safe_require("plugins.telescope-tabs")
+safe_require("plugins.nvim-tree")
 
-    use {
-        "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons"
-    }
-
-    use {"kevinhwang91/nvim-bqf", ft = "qf"}
-    use {"junegunn/fzf", run = function()
-            vim.fn["fzf#install"]()
-        end
-    }
-
-    -- Markdown preview
-    use {
-        "iamcco/markdown-preview.nvim",
-        run = "cd app && npm install",
-        ft = {"markdown", "vimwiki"},
-    }
-
-    -- To be deprecated after https://github.com/neovim/neovim/pull/19243 release
-    -- To stabilize splits location
-    use {"luukvbaal/stabilize.nvim"}
-
-    -- View and search LSP symbols
-    use {"liuchengxu/vista.vim"}
-
-    use {
-        "mfussenegger/nvim-dap",
-        config = function()
-            require("plugins.dap-config")
-        end,
-    }
-
-    -- Light colorscheme
-    use "rafamadriz/neon"
-
-    -- Light colorscheme
-    use "NLKNguyen/papercolor-theme"
-
-    -- CellularAutomaton
-    use "Eandrju/cellular-automaton.nvim"
-
-    use "tpope/vim-surround"
-
-    -- Notification manager
-    use "rcarriga/nvim-notify"
-
-    use "MunifTanjim/nui.nvim"
-    use {
-      "folke/zen-mode.nvim",
-      config = function()
-            require("plugins.zen-mode")
-      end
-    }
-
-    use "linux-cultist/venv-selector.nvim"
-
-    -- Colorschemes
-    use {
-        "rebelot/kanagawa.nvim",
-        config = function()
-            require("plugins.kanagawa")
-        end
-    }
-
-    use {
-        "catppuccin/nvim",
-        config = function()
-            require("plugins.catppuccin")
-        end
-    }
-
-    use {"hat0uma/csvview.nvim"}
-    use {"junegunn/fzf.vim"}
-    use {
-        "coder/claudecode.nvim",
-         requires = { "folke/snacks.nvim" },
-         config = function()
-             require("plugins.claudecode")
-        end
-    }
-    use {
-        'LukasPietzschmann/telescope-tabs',
-        requires = { 'nvim-telescope/telescope.nvim' },
-        config = function()
-            require("plugins.telescope-tabs")
-        end
-    }
-
-    use {
-        'nvim-tree/nvim-tree.lua',
-        config = function()
-            require("plugins.nvim-tree")
-        end
-    }
-    use {
-        'nvim-mini/mini.nvim',
-        config = function()
-            require('mini.cursorword').setup({
-                delay=300
-            })
-        end
-    }
+pcall(function()
+    require("snacks").setup({
+        input = { enabled = true },
+    })
 end)
+safe_require("plugins.claudecode")
+
+pcall(function()
+    require("mini.cursorword").setup({
+        delay = 300,
+    })
+end)
+
+pcall(function()
+    require("tasks").setup({
+        sections = {
+            { name = "Pee 0 (Overdue)", query = "not done\ndue before today\nsort by due" },
+            { name = "Pee 1 (Due Today)", query = "not done\ndue today\nsort by due" },
+            { name = "All Pending", query = "not done\n(due after today) OR (no due date)" },
+            { name = "Recently Closed", query = "done\ncompleted in last 7 days\nsort by due", collapsed = true },
+        },
+    })
+end)
+
+safe_require("plugins.which-key-config")

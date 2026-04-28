@@ -1,10 +1,8 @@
 function loadrequire(module)
-    local function requiref(module)
-        require(module)
-    end
-    res = pcall(requiref,module)
-    if not(res) then
-        print("Module doesn't exist: "..module)
+    local ok, err = pcall(require, module)
+    if not ok then
+        vim.api.nvim_err_writeln(("Failed to load module %s: %s"):format(module, err))
+        error(err)
     end
 end
 

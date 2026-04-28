@@ -4,8 +4,9 @@ My Neovim config.
 
 ### Setting up
 
-- Install [packer.nvim][packer], the plugin manager by following the doc [here][packer-install].
-- Start neovim and do `:PackerInstall`
+- Install a Neovim build that includes the built-in `vim.pack` plugin manager.
+- Start Neovim; missing plugins will be installed by `vim.pack`.
+- Update plugins with `:lua vim.pack.update()`.
 
 ### Screenshots
 
@@ -23,7 +24,4 @@ Archive of my vim config in [vim-config][vim-config] branch.
 
 
 [vim-config]: https://github.com/vipul-sharma20/vimrc/tree/vim-config
-[packer-install]: https://github.com/wbthomason/packer.nvim#quickstart
-[packer]: https://github.com/wbthomason/packer.nvim
 [sc1]: ./assets/sc1.png
-

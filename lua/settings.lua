@@ -7,7 +7,7 @@ vim.o.sw = 4 -- Change the number of space characters inserted for indentation
 vim.o.expandtab = true  -- Converts tabs to spaces
 
 -- Colorscheme
-vim.cmd('colorscheme catppuccin-mocha')
+pcall(vim.cmd.colorscheme, "catppuccin-mocha")
 vim.o.bg = "dark"
 vim.o.syntax = "on"
 
